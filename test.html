@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <script src="https://kit.fontawesome.com/53a8528b9f.js" crossorigin="anonymous"></script>
+        <title>practice</title>
+        <link rel="stylesheet" href="sample.css">
+    </head>
+    <body>
+        <main>
+            <h2>今日やること</h2>
+            <div class="todo-index">
+                <from id="todo-from">
+                    </from>
+                <input type="text" id="new-todo" placeholder="ここに入力">
+                <button id="add-button">追加</button>
+
+            </div>
+
+        </main>
+        <script>
+            'use strict';
+            const button = document.getElementById('add-button');
+            let count = 0;
+            let todoList = [];
+
+            // buttonタグを押された時の処理
+            button.addEventListener('click',()=> {
+                add();
+            });
+            // Enterキーを押した時の処理
+            window.document.onkeypress = function(event) {
+                if(event.key === 'Enter') {
+                    add();
+                }
+            }
+
+            // Backspaceキーを押した時の処理
+            window.document.onkeydown = function(event) {
+                if(event.key === 'Backspace') {
+                    if(document.getElementById('new-todo').value === "") {　//textboxに値がない場合のみ実行
+                        let answer =　window.confirm('本当に消去しますか？');
+                        if(answer === true){
+                            const del = document.getElementById(`btn${count-1}`);
+                            del.remove(); //要素の消去
+                            todoList.pop();
+                            count--;
+                        }
+                    }
+                }
+            }
+            
+            
+        
+            function add(){
+                const item = document.getElementById('new-todo').value;
+                if (item !== "") {  //textboxに値がない場合は追加しない
+                    // <checkbox>の生成
+                    const label = `<label class="todo" id="btn${count}"><input type="checkbox" name="check" onchange="switching(${count})">${item}<label><br>`;
+                    document.getElementById('todo-from').insertAdjacentHTML('beforeend',label);
+                    todoList.push(document.getElementById('btn'+ count));
+                    count++;
+
+                    document.getElementById('new-todo').value = ""; //textを空にする
+                }
+            };
+
+            
+           
+
+            // チェックボックスが押された時の処理
+            function switching(todoCount) {
+                if (todoList[todoCount].className === 'todo') {
+                    todoList[todoCount].className = 'end-todo';
+                } else {
+                    todoList[todoCount].className = 'todo';
+                }
+            };
+        </script>
+    </body>
+</html>
